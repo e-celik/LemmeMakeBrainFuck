@@ -1,62 +1,73 @@
 #include <stdio.h>
+#include <stdbool.h>
 
 int main (int argc, char *argv[]) 
 {
-  File* FP;
+  FILE* fp;
   fp = fopen(argv[1], "r");
 
+  if (fp == NULL)
+  {
+    printf("Error");
+  }
+  else{
+    printf("GoodRead\n");
+  }
+
   char instrs[1024];
-  char* instrPtr = intrs;
+  char* instrPtr = instrs;
 
   int c;
-  while (c = fgetc(fp) != EOF)
+  while ((c = fgetc(fp)) != EOF)
     {
-      if (c == '>' || c == '<' || c == '+' || c == '-' || c == '.' || c == ',' || c == '[' || c = ']')
+      if (c == '>' || c == '<' || c == '+' || c == '-' || c == '.' || c == ',' || c == '[' || c == ']')
         {
-          instrs[instrPtr] = c;
+          *instrPtr = c;
           instrPtr++;
         }
     }
-  instrPtr = intrs;
+  instrPtr = instrs;
 
   char tape[1024];
   char *tapePtr = tape;
 
+  bool exitCondition = 0;
+
   while (!exitCondition)
     {
-      switch (instrs[instrPtr])
+      switch (*instrPtr)
         {
-          case: '>'
+          case '>':
             tapePtr++;
             instrPtr++;
             break;
-          case: '<'
+          case '<':
             tapePtr--;
             instrPtr++;
             break;
-          case: '+'
-            tape[tapePtr]++;
+          case '+':
+            (*tapePtr)++;
             instrPtr++;
             break;
-          case: '-'
-            tape[tapePtr]--;
+          case '-':
+            (*tapePtr)--;
             instrPtr++;
             break;
-          case: '.'
-            putc(tape[tapePtr], stdout);
+          case '.':
+            printf("%c", *tapePtr);
             instrPtr++;
             break;
-          case: ','
-            tape[tapePtr] = getc(stdin);
+          case ',':
+            *tapePtr = getc(stdin);
             instrPtr++;
             break;
-          case: '['
-            if (tape[tapePtr] == 0)
+          case '[':
+            if (*tapePtr == 0)
             {
               unsigned int nesteds = 0;
               while (instrPtr++)
               {
-                  if (instrs[instrPtr] == ']')
+                  if (*instrPtr == ']')
                   {
                     if (nesteds == 0)
                     {
@@ -68,20 +79,20 @@ int main (int argc, char *argv[])
                       nesteds--;
                     }
                   }
-                  else (instrs[instPtr] == '['
+                  else if (*instrPtr == '[')
                   {
                     nesteds++;
                   }
               }
             }
             break;
-          case: ']'
-            if (tape[tapePtr] != 0;
+          case ']':
+            if (*tapePtr != 0)
             {
               unsigned int nesteds = 0;
               while (instrPtr--)
               {
-                  if (instrs[instrPtr] == '[')
+                  if (*instrPtr == '[')
                   {
                     if (nesteds == 0)
                     {
@@ -93,7 +104,7 @@ int main (int argc, char *argv[])
                       nesteds--;
                     }
                   }
-                  else (instrs[instPtr] == ']'
+                  else if (*instrPtr == ']')
                   {
                     nesteds++;
                   }
@@ -101,11 +112,14 @@ int main (int argc, char *argv[])
             }
             break;
           default:
-          exitCondition = TRUE;
+          exitCondition = 1;
             
+    }
+
+  
+
+  
   }
+  printf("END!");
 
-  
-
-  
 }
